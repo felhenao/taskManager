@@ -28,17 +28,24 @@ router.delete('/tasks/:id', auth, async (req,res) => {
         res.status(500).send()
     }
 })
+
+// Get /tasks?completed=true
+// Get /tasks?limit=10&skip=20
 router.get('/tasks', auth, async (req, res) => {
     const match = {}
     
     if (req.query.completed) {
         match.completed = req.query.completed === 'true'
-
     }
     try {
         await req.user.populate({
             path: 'tasks',
-            match
+            match,
+            options: {
+                limit: parseInt(req.query.limit),
+                skip: parseInt(req.query.skip)
+
+            }
         }).execPopulate()
         res.send(req.user.tasks)
     } catch (e) {

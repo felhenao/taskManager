@@ -50,7 +50,6 @@ router.post('/users/logoutall', auth, async (req, res) => {
     }
 })
 
-
 router.get('/users/me', auth, async(req, res) => {
     res.send(req.user)
 })
